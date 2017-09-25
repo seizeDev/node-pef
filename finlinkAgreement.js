@@ -5,7 +5,8 @@ var express = require('express');
 var app = express();
 
 //获取node传入参数
-var dirPath = "/data/resources/export_policy";
+///Users/lizhen/Desktop/resurce/
+var dirPath = "/Users/lizhen/Desktop/resurce/export_policy";
 
 var htmlMaps = {
     '居间服务协议':'intermediary_agreement',
@@ -67,8 +68,8 @@ function post(username, pwd, type) {
                 config.timestamp = timestamp;
                 config.signature = md5(data.data.key + timestamp.toString());
                 var thisName = exportHtml?htmlMaps[exportHtml]:'intermediary_agreement';
-                if (!fs.existsSync(thisName+thisTime)) {
-                    fs.mkdirSync(thisName+thisTime);
+                if (!fs.existsSync(dirPath+'/'+thisName+thisTime)) {
+                    fs.mkdirSync(dirPath+'/'+thisName+thisTime);
                 }
                 orderList.forEach((order) => {
                     loginCallback(config, order, thisName,thisTime).then(function (total) {
