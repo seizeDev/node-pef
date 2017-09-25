@@ -1,18 +1,18 @@
-﻿let http = require("http");
-let fs = require("fs");
-let md5 = require("md5");
+﻿var http = require("http");
+var fs = require("fs");
+var md5 = require("md5");
 var express = require('express');
 var app = express();
 
 //获取node传入参数
 // var dirPath = "/home/work/agree/";
 
-let htmlMaps = {
+var htmlMaps = {
     '居间服务协议':'intermediary_agreement',
     '借款协议':'new_loan_agreement',
 };
-let orderList = [];
-let exportHtml = null
+var orderList = [];
+var exportHtml = null
 
 app.get('/getPdf', function(req, res){
     console.log('/getPdf')
@@ -27,7 +27,7 @@ app.get('/getPdf', function(req, res){
 
 function post(username, pwd, type) {
     return new Promise(function (resolve, reject) {
-        let params = {
+        var params = {
             username: username,
             password: pwd,
             type: type
@@ -52,20 +52,20 @@ function post(username, pwd, type) {
             }
         };
 
-        let req = http.request(options, function (res) {
-            let body = "";
+        var req = http.request(options, function (res) {
+            var body = "";
             res.setEncoding('utf-8');
             res.on('data', function (chunk) {
                 body += chunk;
             }).on("end", function () {
-                let thisTime = reserverTime();
-                let data = parseResult(body);
-                let config = {};
-                let timestamp = (new Date()).valueOf();
+                var thisTime = reserverTime();
+                var data = parseResult(body);
+                var config = {};
+                var timestamp = (new Date()).valueOf();
                 config.__sid = data.data.__sid;
                 config.timestamp = timestamp;
                 config.signature = md5(data.data.key + timestamp.toString());
-                let thisName = exportHtml?htmlMaps[exportHtml]:'intermediary_agreement';
+                var thisName = exportHtml?htmlMaps[exportHtml]:'intermediary_agreement';
                 if (!fs.existsSync(thisName+thisTime)) {
                     fs.mkdirSync(thisName+thisTime);
                 }
@@ -73,7 +73,7 @@ function post(username, pwd, type) {
                     loginCallback(config, order, thisName,thisTime).then(function (total) {
                         console.log(total)
                         if(total == orderList.length){
-                            let fileName = thisName+thisTime;
+                            var fileName = thisName+thisTime;
                             // creating archives
                             var fs = require('fs');
                             var archiver = require('archiver');
@@ -106,7 +106,7 @@ function post(username, pwd, type) {
                             });
 
                             archive.pipe(output);
-                            let fsDir = __dirname + '/'+fileName;
+                            var fsDir = __dirname + '/'+fileName;
                             fs.readdirSync(fsDir).forEach(function (file) {
                                 console.log(file)
                                 var pathname = __dirname+'/'+fileName+'/' + file;
@@ -123,11 +123,11 @@ function post(username, pwd, type) {
         req.end();
     })
 }
-let total = 0;
+var total = 0;
 var exec = require('child_process').exec;
 function loginCallback(data, order, pageHtml,thisTime) {
     return new Promise(function (resolve, reject) {
-        let url = `phantomjs savePdf.js "http://192.168.0.34:3000/index/fenlink-assets-front/apph5/${pageHtml}.html?sid=${data.__sid}&timestamp=${data.timestamp}&signature=${data.signature}&orderNo=${order}" ${order} ${pageHtml} ${thisTime}`;
+        var url = `phantomjs savePdf.js "http://192.168.0.34:3000/index/fenlink-assets-front/apph5/${pageHtml}.html?sid=${data.__sid}&timestamp=${data.timestamp}&signature=${data.signature}&orderNo=${order}" ${order} ${pageHtml} ${thisTime}`;
         console.log(url)
         exec(url, {
                 encoding: 'utf-8',
@@ -162,8 +162,8 @@ function parseResult(body) {
 };
 
 function reserverTime() {
-    let thisDate = new Date();
-    let nameDate = thisDate.getFullYear().toString()+(thisDate.getMonth()+1).toString()+thisDate.getDate().toString()+thisDate.getHours().toString()+thisDate.getMinutes().toString();
+    var thisDate = new Date();
+    var nameDate = thisDate.getFullYear().toString()+(thisDate.getMonth()+1).toString()+thisDate.getDate().toString()+thisDate.getHours().toString()+thisDate.getMinutes().toString();
     return nameDate
 }
 
