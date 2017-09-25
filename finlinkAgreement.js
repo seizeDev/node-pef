@@ -128,7 +128,7 @@ var total = 0;
 var exec = require('child_process').exec;
 function loginCallback(data, order, pageHtml,thisTime) {
     return new Promise(function (resolve, reject) {
-        var url = `phantomjs savePdf.js "http://192.168.0.34:3000/index/fenlink-assets-front/apph5/${pageHtml}.html?sid=${data.__sid}&timestamp=${data.timestamp}&signature=${data.signature}&orderNo=${order}" ${order} ${pageHtml} ${thisTime}`;
+        var url = `phantomjs savePdf.js "http://54.223.101.36:3000/web/asset/app-h5/${pageHtml}.html?sid=${data.__sid}&timestamp=${data.timestamp}&signature=${data.signature}&orderNo=${order}" ${order} ${pageHtml} ${thisTime}`;
         console.log(url)
         exec(url, {
                 encoding: 'utf-8',

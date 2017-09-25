@@ -22,6 +22,6 @@ function openPage(url) {
                 console.log("Page failed to load.");
             }
             phantom.exit(0);
-        }, 8000);
+        }, 3000);
     });
 }
