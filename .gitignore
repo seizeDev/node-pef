@@ -1,0 +1,9 @@
+.idea/
+.DS_Store
+node_modules
+rev/
+npm-debug.log
+/wap/static/js/
+/shopmanager/static/js/
+/apph5/static/js/
+/build
