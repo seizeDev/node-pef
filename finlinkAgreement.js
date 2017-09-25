@@ -15,6 +15,7 @@ var orderList = [];
 var exportHtml = null
 
 app.get('/getPdf', function(req, res){
+    total = 0;
     console.log('/getPdf')
     console.log(req.query.order_nos)
     orderList = req.query.order_nos.split(',');
