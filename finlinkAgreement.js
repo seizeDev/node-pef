@@ -5,7 +5,7 @@ var express = require('express');
 var app = express();
 
 //获取node传入参数
-// var dirPath = "/home/work/agree/";
+var dirPath = "/data/resources/export_policy";
 
 var htmlMaps = {
     '居间服务协议':'intermediary_agreement',
@@ -80,7 +80,7 @@ function post(username, pwd, type) {
                             var archiver = require('archiver');
 
 // create a file to stream archive data to.
-                            var output = fs.createWriteStream(__dirname + '/'+fileName+'.zip');
+                            var output = fs.createWriteStream(dirPath + '/'+fileName+'.zip');
                             var archive = archiver('zip', {
                                 zlib: { level: 9 } // Sets the compression level.
                             });
@@ -107,10 +107,10 @@ function post(username, pwd, type) {
                             });
 
                             archive.pipe(output);
-                            var fsDir = __dirname + '/'+fileName;
+                            var fsDir = dirPath + '/'+fileName;
                             fs.readdirSync(fsDir).forEach(function (file) {
                                 console.log(file)
-                                var pathname = __dirname+'/'+fileName+'/' + file;
+                                var pathname = dirPath+'/'+fileName+'/' + file;
                                 console.log(pathname)
                                 archive.append(fs.createReadStream(pathname), { name: file});
                             });

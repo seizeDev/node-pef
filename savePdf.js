@@ -4,6 +4,7 @@ var url = args['1'];
 var name = args['2'];
 var filename = args['3'];
 var filetime = args['4'];
+var dirPath = "/data/resources/export_policy";
 openPage(url);
 
 function openPage(url) {
@@ -17,7 +18,7 @@ function openPage(url) {
                     orientation: 'portrait',
                     border: '1cm'
                 };
-                page.render(filename+filetime+'/'+name + ".pdf");
+                page.render(dirPath+'/'+filename+filetime+'/'+name + ".pdf");
             } else {
                 console.log("Page failed to load.");
             }
