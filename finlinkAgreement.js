@@ -6,7 +6,7 @@ var app = express();
 
 //获取node传入参数
 ///Users/lizhen/Desktop/resurce/
-var dirPath = "/Users/lizhen/Desktop/resurce/export_policy";
+var dirPath = "/data/resources/export_policy";
 
 var htmlMaps = {
     '居间服务协议':'intermediary_agreement',
