@@ -6,8 +6,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "NODE_ENV=test node finlinkAgreement.js",
-    "devenv":"NODE_ENV=test",
-    "buildenv":"NODE_ENV=production",
+    "devenv":"NODE_ENV=test pm2 start finlinkAgreement.js",
+    "buildenv":"NODE_ENV=production pm2 start finlinkAgreement.js",
     "build": "NODE_ENV=production node finlinkAgreement.js"
   },
   "keywords": [
