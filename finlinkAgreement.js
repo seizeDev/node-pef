@@ -1,4 +1,5 @@
 ﻿var http = require("http");
+var https = require("https");
 var fs = require("fs");
 var md5 = require("md5");
 var express = require('express');
@@ -26,7 +27,7 @@ app.get('/getPdf', function(req, res){
     console.log(req.query.order_nos)
     orderList = req.query.order_nos.split(',');
     exportHtml = req.query.html_name;
-    post('lizhenceshi', 'lizhen', 'backstage_user').then(function (result) {
+    post('lizhen_export', 'lizhenniubi', 'backstage_user').then(function (result) {
         console.log(result);
         logger.writeInfo(result);
         res.send(result);
@@ -45,27 +46,29 @@ function post(username, pwd, type) {
             port: 8180,
             path: '/backstage/v1/sso/login'
         }
+        //测试线地址
         const testEnv = {
             hostname: '54.223.101.36',
             port: 3000,
             path: '/asset/backstage/v1/sso/login'
         }
+        //线上地址
         const productionEnv = {
-            hostname: '54.223.101.36',
-            port: 3000,
+            hostname: 'o2o.finlink.net.cn',
+            port: 80,
             path: '/asset/backstage/v1/sso/login'
         }
         const options = {
-            hostname: testEnv.hostname,
-            port: testEnv.port,
-            path: testEnv.path,
+            hostname: productionEnv.hostname,
+            port: productionEnv.port,
+            path: productionEnv.path,
             method: 'POST',
             headers: {
                 "Content-Type": 'application/json;charset=utf-8'
             }
         };
 
-        var req = http.request(options, function (res) {
+        var req = https.request(options, function (res) {
             var body = "";
             res.setEncoding('utf-8');
             res.on('data', function (chunk) {
@@ -133,7 +136,9 @@ var total = 0;
 var exec = require('child_process').exec;
 function loginCallback(data, order, pageHtml,thisTime) {
     return new Promise(function (resolve, reject) {
-        var url = `phantomjs savePdf.js "http://54.223.101.36:3000/web/asset/app-h5/${pageHtml}.html?sid=${data.__sid}&timestamp=${data.timestamp}&signature=${data.signature}&orderNo=${order}" ${order} ${pageHtml} ${thisTime}`;
+        var productUrl = 'https://o2o.finlink.net.cn/web/asset/app-h5/';
+        var testUrl = 'http://54.223.101.36:3000/web/asset/app-h5/';
+        var url = `phantomjs savePdf.js "${productUrl}${pageHtml}.html?sid=${data.__sid}&timestamp=${data.timestamp}&signature=${data.signature}&orderNo=${order}" ${order} ${pageHtml} ${thisTime}`;
         console.log(url)
         logger.writeInfo(url);
         exec(url, {
