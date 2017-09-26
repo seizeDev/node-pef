@@ -19,7 +19,7 @@ function openPage(url) {
                     orientation: 'portrait',
                     border: '1cm'
                 };
-                page.render(dirPath+'/'+filename+filetime+'/'+name + ".pdf");
+                page.render(dirPath+'/'+(filename+filetime)+'/'+name + ".pdf");
             } else {
                 console.log("Page failed to load.");
             }

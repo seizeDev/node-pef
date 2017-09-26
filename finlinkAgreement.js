@@ -74,8 +74,8 @@ function post(username, pwd, type) {
                 config.timestamp = timestamp;
                 config.signature = md5(data.data.key + timestamp.toString());
                 var thisName = exportHtml?htmlMaps[exportHtml]:'intermediary_agreement';
-                if (!fs.existsSync(dirPath+'/'+thisName+thisTime)) {
-                    fs.mkdirSync(dirPath+'/'+thisName+thisTime);
+                if (!fs.existsSync(dirPath+'/'+(thisName+thisTime))) {
+                    fs.mkdirSync(dirPath+'/'+(thisName+thisTime));
                 }
                 orderList.forEach((order) => {
                     loginCallback(config, order, thisName,thisTime).then(function (total) {
@@ -86,20 +86,14 @@ function post(username, pwd, type) {
                             // creating archives
                             var fs = require('fs');
                             var archiver = require('archiver');
-
-// create a file to stream archive data to.
                             var output = fs.createWriteStream(dirPath + '/'+fileName+'.zip');
                             var archive = archiver('zip', {
                                 zlib: { level: 9 } // Sets the compression level.
                             });
-
-// listen for all archive data to be written
                             output.on('close', function() {
                                 console.log(archive.pointer() + ' total bytes');
                                 resolve(thisName+thisTime)
                             });
-
-// good practice to catch warnings (ie stat failures and other non-blocking errors)
                             archive.on('warning', function(err) {
                                 if (err.code === 'ENOENT') {
                                     // log warning
@@ -108,8 +102,6 @@ function post(username, pwd, type) {
                                     throw err;
                                 }
                             });
-
-// good practice to catch this error explicitly
                             archive.on('error', function(err) {
                                 throw err;
                             });
