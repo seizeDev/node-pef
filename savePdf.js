@@ -4,8 +4,8 @@ var url = args['1'];
 var name = args['2'];
 var filename = args['3'];
 var filetime = args['4'];
-// var dirPath = "/data/resources/system/export/export_policy";
-var dirPath = "/Users/lizhen/Desktop/resurce/export_policy";
+var dirPath = "/data/resources/system/export/export_policy";
+// var dirPath = "/Users/lizhen/Desktop/resurce/export_policy";
 openPage(url);
 
 function openPage(url) {
