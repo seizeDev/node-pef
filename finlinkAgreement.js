@@ -5,12 +5,13 @@ var express = require('express');
 var logger = require("./log4js/logHelper").helper;
 var log = require('./log4js/logHelper');
 var app = express();
+var optionMsg = null;
 log.use(app);
 
 //获取node传入参数
 ///Users/lizhen/Desktop/resurce/
-var dirPath = "/data/resources/system/export/export_policy";
-// var dirPath = "/Users/lizhen/Desktop/resurce/export_policy";
+// var dirPath = "/data/resources/system/export/export_policy";
+var dirPath = "/Users/lizhen/Desktop/resurce/export_policy";
 
 var htmlMaps = {
     '居间服务协议':'intermediary_agreement',
@@ -45,15 +46,27 @@ function post(username, pwd, type) {
             port: 8180,
             path: '/backstage/v1/sso/login'
         }
-        const ceshi = {
+        const testEnv = {
             hostname: '54.223.101.36',
             port: 3000,
             path: '/asset/backstage/v1/sso/login'
         }
+        const productionEnv = {
+            hostname: '54.223.101.36',
+            port: 3000,
+            path: '/asset/backstage/v1/sso/login'
+        }
+        console.log(process.env.NODE_ENV)
+        if (process.env.NODE_ENV == 'test') {
+            optionMsg = testEnv
+
+        }else if(process.env.NODE_ENV == 'production'){
+            optionMsg = productionEnv
+        }
         const options = {
-            hostname: ceshi.hostname,
-            port: ceshi.port,
-            path: ceshi.path,
+            hostname: optionMsg.hostname,
+            port: optionMsg.port,
+            path: optionMsg.path,
             method: 'POST',
             headers: {
                 "Content-Type": 'application/json;charset=utf-8'
