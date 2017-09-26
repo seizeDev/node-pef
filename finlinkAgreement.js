@@ -2,11 +2,15 @@
 var fs = require("fs");
 var md5 = require("md5");
 var express = require('express');
+var logger = require("./log4js/logHelper").helper;
+var log = require('./log4js/logHelper');
 var app = express();
+log.use(app);
 
 //获取node传入参数
 ///Users/lizhen/Desktop/resurce/
-var dirPath = "/data/resources/system/export/export_policy";
+// var dirPath = "/data/resources/system/export/export_policy";
+var dirPath = "/Users/lizhen/Desktop/resurce/export_policy";
 
 var htmlMaps = {
     '居间服务协议':'intermediary_agreement',
@@ -16,6 +20,7 @@ var orderList = [];
 var exportHtml = null
 
 app.get('/getPdf', function(req, res){
+    logger.writeInfo("开始记录日志");
     total = 0;
     console.log('/getPdf')
     console.log(req.query.order_nos)
@@ -23,6 +28,7 @@ app.get('/getPdf', function(req, res){
     exportHtml = req.query.html_name;
     post('lizhenceshi', 'lizhen', 'backstage_user').then(function (result) {
         console.log(result);
+        logger.writeInfo(result);
         res.send(result);
     })
 });
@@ -74,6 +80,7 @@ function post(username, pwd, type) {
                 orderList.forEach((order) => {
                     loginCallback(config, order, thisName,thisTime).then(function (total) {
                         console.log(total)
+                        logger.writeInfo(total);
                         if(total == orderList.length){
                             var fileName = thisName+thisTime;
                             // creating archives
@@ -131,6 +138,7 @@ function loginCallback(data, order, pageHtml,thisTime) {
     return new Promise(function (resolve, reject) {
         var url = `phantomjs savePdf.js "http://54.223.101.36:3000/web/asset/app-h5/${pageHtml}.html?sid=${data.__sid}&timestamp=${data.timestamp}&signature=${data.signature}&orderNo=${order}" ${order} ${pageHtml} ${thisTime}`;
         console.log(url)
+        logger.writeInfo(url);
         exec(url, {
                 encoding: 'utf-8',
                 timeout: 100000,
