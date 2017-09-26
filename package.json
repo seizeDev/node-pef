@@ -5,10 +5,8 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "node finlinkAgreement.js test",
-    "pmdev":"pm2 start finlinkAgreement.js test",
-    "pmbuild":"pm2 start finlinkAgreement.js production",
-    "build": "node finlinkAgreement.js production"
+    "dev": "node finlinkAgreement.js",
+    "build": "node finlinkAgreement.js"
   },
   "keywords": [
     "node",

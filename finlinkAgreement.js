@@ -5,8 +5,6 @@ var express = require('express');
 var logger = require("./log4js/logHelper").helper;
 var log = require('./log4js/logHelper');
 var app = express();
-var optionMsg = null;
-var arguments = process.argv.splice(2);
 log.use(app);
 
 //获取node传入参数
@@ -22,7 +20,6 @@ var orderList = [];
 var exportHtml = null
 
 app.get('/getPdf', function(req, res){
-    console.log(arguments)
     logger.writeInfo("开始记录日志");
     total = 0;
     console.log('/getPdf')
@@ -58,16 +55,10 @@ function post(username, pwd, type) {
             port: 3000,
             path: '/asset/backstage/v1/sso/login'
         }
-        if (arguments[0] == 'test') {
-            optionMsg = testEnv
-
-        }else if(arguments[0] == 'production'){
-            optionMsg = productionEnv
-        }
         const options = {
-            hostname: optionMsg.hostname,
-            port: optionMsg.port,
-            path: optionMsg.path,
+            hostname: testEnv.hostname,
+            port: testEnv.port,
+            path: testEnv.path,
             method: 'POST',
             headers: {
                 "Content-Type": 'application/json;charset=utf-8'
